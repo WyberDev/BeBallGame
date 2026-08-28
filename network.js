@@ -2,9 +2,13 @@
 // MÓDULO DE RED Y SINCRONIZACIÓN (WEBSOCKET)
 // ==========================================
 
+// Poné acá la URL que te da Ngrok (debe empezar con wss://)
 const SERVER_URL = 'wss://https://a1f3-2803-9800-b02d-7af7-c795-b59e-f8df-fbe6.ngrok-free.app';
 
 export const socket = new WebSocket(SERVER_URL);
+
+// Exportamos localNetwork como alias de socket para mantener compatibilidad con main.js
+export const localNetwork = socket;
 
 socket.onopen = () => {
     console.log('Conectado exitosamente al servidor central de BeBall');
