@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeBall</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Título Principal -->
+    <div class="name">
+        <h1>BeBall</h1>
+    </div>
+
+    <!-- PANTALLA 1: MENU NICKNAME -->
+    <div id="nick-menu">
+        <div class="login-box">
+            <p>Ingresá tu nickname</p>
+            <!-- SE AGREGÓ EL FORM PARA EVITAR RECARGAS Y CAPTURAR EL ENTER AUTOMÁTICAMENTE -->
+            <form id="nick-form" action="javascript:void(0);">
+                <div class="input-group">
+                    <input type="text" id="input-nick" placeholder="Tu nickname..." required autocomplete="off" maxlength="17">
+                    <button type="submit" id="btn-aceptar">Aceptar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- PANTALLA 2: MENU DE SALAS -->
+    <div id="salas-menu" class="oculto">
+        <div class="top-bar">
+            <button id="btn-cambiar-nick">Cambiar Nick</button>
+            <button id="btn-abrir-crear-sala" class="btn-primary">Crear Sala</button>
+            <button id="btn-test-canvas" class="btn-highlight">Test Play Canvas</button>
+        </div>
+
+        <div class="rooms-container">
+            <h2>Salas Disponibles</h2>
+            <div id="lista-salas" class="rooms-list">
+                <!-- JavaScript inyectará el contenido acá -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CREADOR DE SALAS -->
+    <div id="modal-crear-sala" class="modal-overlay oculto">
+        <div class="modal-content">
+            <h2>Crear Nueva Sala</h2>
+            
+            <div class="form-group">
+                <label for="nombre-sala-input">Nombre de la sala:</label>
+                <input type="text" id="nombre-sala-input" placeholder="Ej: Sala de Haxball 3v3" maxlength="30">
+            </div>
+
+            <div class="form-group">
+                <label for="max-jugadores-select">Límite de Jugadores:</label>
+                <select id="max-jugadores-select" class="combo-players">
+                    <option value="2">2 personas (1v1)</option>
+                    <option value="3">3 personas</option>
+                    <option value="4">4 personas (2v2)</option>
+                    <option value="5">5 personas</option>
+                    <option value="6">6 personas (3v3)</option>
+                    <option value="7">7 personas</option>
+                    <option value="8">8 personas (4v4)</option>
+                    <option value="9">9 personas</option>
+                    <option value="10" selected>10 personas (5v5)</option>
+                    <option value="11">11 personas</option>
+                    <option value="12">12 personas (6v6)</option>
+                </select>
+            </div>
+
+            <!-- Opción de Contraseña -->
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" id="chk-usar-pass"> Usar contraseña
+                </label>
+            </div>
+
+            <div class="form-group oculto" id="group-pass-input">
+                <label for="sala-pass-input">Contraseña:</label>
+                <input type="password" id="sala-pass-input" placeholder="Ingresá la clave..." maxlength="20">
+            </div>
+
+            <div class="modal-actions">
+                <button id="btn-cerrar-crear-sala" class="btn-secondary">Cancelar</button>
+                <button id="btn-confirmar-crear-sala" class="btn-primary">Crear Sala</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANTALLA 3: CANVAS DEL JUEGO + CHAT -->
+    <div id="game-container" class="oculto">
+        <div class="game-header">
+            <button id="btn-salir-juego">Salir al Menú</button>
+            <button id="btn-toggle-in-game-menu" class="btn-secondary">Menú</button>
+        </div>
+
+        <div class="canvas-wrapper">
+            <canvas id="gameCanvas" width="1000" height="500"></canvas>
+
+            <!-- OVERLAY DE PAUSA Y TIMER -->
+            <div id="pause-overlay" class="oculto">
+                <div class="pause-box">
+                    <h2 id="pause-title">JUEGO EN PAUSA</h2>
+                    <div id="countdown-timer" class="oculto">1.5</div>
+                </div>
+            </div>
+
+            <!-- MODAL MENÚ IN-GAME -->
+            <div id="in-game-modal" class="oculto">
+                <div class="modal-content large-modal">
+                    <h3>Menú de Partida</h3>
+                    
+                    <div class="menu-sections">
+                        <!-- Sección Mi Equipo -->
+                        <div class="menu-box">
+                            <h4>Mi Estado</h4>
+                            <div class="team-buttons">
+                                <button id="btn-join-blue" class="btn-team-blue">Equipo Azul</button>
+                                <button id="btn-join-red" class="btn-team-red">Equipo Rojo</button>
+                                <button id="btn-join-spec" class="btn-team-spec">Espectador</button>
+                            </div>
+                        </div>
+
+                        <!-- Sección Administración -->
+                        <div id="admin-panel" class="menu-box admin-only">
+                            <div class="admin-header">
+                                <h4>Administración de Sala</h4>
+                                <button id="btn-toggle-pause" class="btn-pause">Pausar Juego</button>
+                            </div>
+                            <div class="players-list-container">
+                                <h5>Asignar Jugadores:</h5>
+                                <div id="players-admin-list" class="players-admin-list">
+                                    <!-- Se genera dinámicamente con JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="btn-close-modal" class="btn-secondary close-btn">Cerrar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- CAJA DE CHAT -->
+        <div id="chat-container">
+            <div id="chat-messages">
+                <div class="chat-msg system">¡Bienvenido a BeBall! Presioná ENTER para chatear.</div>
+            </div>
+            <form id="chat-form" autocomplete="off">
+                <input type="text" id="chat-input" placeholder="Escribí un mensaje..." maxlength="120" />
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>
