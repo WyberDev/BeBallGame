@@ -3,7 +3,7 @@
 // ==========================================
 
 // Poné acá la URL que te da Ngrok (debe empezar con wss://)
-const SERVER_URL = 'wss://https://a1f3-2803-9800-b02d-7af7-c795-b59e-f8df-fbe6.ngrok-free.app';
+const SERVER_URL = 'wss://a1f3-2803-9800-b02d-7af7-c795-b59e-f8df-fbe6.ngrok-free.app';
 
 export const socket = new WebSocket(SERVER_URL);
 
